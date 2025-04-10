@@ -1,9 +1,19 @@
+using CRUD.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var conString = builder.Configuration.GetConnectionString("conexion") ??
+     throw new InvalidOperationException("Connection string 'conexion'" +
+    " not found.");
+builder.Services.AddDbContext<MvcrudContext>(options =>
+    options.UseSqlServer(conString));
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
